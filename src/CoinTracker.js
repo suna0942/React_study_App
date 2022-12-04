@@ -42,25 +42,27 @@ function CoinTracker() {
       <h3>코인 가격</h3>
       {loading ? 
         <strong>Loading...</strong> : 
-        <select onChange={selectChange}>
-        {coins.map((coin) => (
-          <option key={coin.id} data-name={coin.symbol} value={coin.quotes.USD.price}>
-            {coin.name}({coin.symbol}): ${coin.quotes.USD.price} USD
-          </option>
-        ))}
-      </select>
+        <div>
+          <select onChange={selectChange}>
+          {coins.map((coin) => (
+            <option key={coin.id} data-name={coin.symbol} value={coin.quotes.USD.price}>
+              {coin.name}({coin.symbol}): ${coin.quotes.USD.price} USD
+            </option>
+          ))}
+          </select>
+          <h3>코인 변환기</h3>
+          <label htmlFor="inputPrice">{currency ? '$' : '￦'}</label>
+          <input value={amount} onChange={onChange} id="inputPrice" type="number" placeholder="금액을 입력해주세요"/>
+          <button onClick={changeCurrency}>
+            {currency ? '$ → won' : 'won → $'}
+          </button><br/>
+          <label htmlFor="changePrice">↔ {sym} </label>
+          <input 
+            value={currency ? amount / convert : Math.ceil(amount / rate * 100) / 100 / convert}
+            id="changePrice" readOnly/>
+          <p>현재 환율: 1$(USD) - {rate.toLocaleString('ko-KR')}원(KRW)</p>
+        </div>
       }
-
-      <h3>코인 변환기</h3>
-      <label htmlFor="inputPrice">{currency ? '$' : '￦'}</label>
-      <input value={amount} onChange={onChange} id="inputPrice" type="number" placeholder="금액을 입력해주세요"/>
-      <button onClick={changeCurrency}>
-        {currency ? '$ → won' : 'won → $'}
-      </button><br/>
-      <label htmlFor="changePrice">↔ {sym} </label>
-      <input 
-        value={currency ? amount / convert : Math.ceil(amount / rate * 100) / 100 / convert}
-        id="changePrice" readOnly/>
     </div>
   );
 }
