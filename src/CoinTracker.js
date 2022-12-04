@@ -8,6 +8,7 @@ function CoinTracker() {
   const [sym, setSym] = useState("");
   const [currency, setCurrency] = useState(true);
   const [rate, setRate] = useState(0);
+  const [today, setToday] = useState(new Date());
 
   const changeCurrency = () => {
     setCurrency(prev => !currency);
@@ -36,6 +37,10 @@ function CoinTracker() {
       setRate(prev => data[0].basePrice);
     });
   }, []);
+  
+  setInterval(() => {
+    setToday(new Date());
+  }, 1000);
   return (
     <div>
       <h1>🧮The Coins! {loading ? "" : `(${coins.length})`}</h1>
@@ -61,6 +66,7 @@ function CoinTracker() {
             value={currency ? amount / convert : Math.ceil(amount / rate * 100) / 100 / convert}
             id="changePrice" readOnly/>
           <p>현재 환율: 1$(USD) - {rate.toLocaleString('ko-KR')}원(KRW)</p>
+          <p>({today.toLocaleTimeString()})</p>
         </div>
       }
     </div>
